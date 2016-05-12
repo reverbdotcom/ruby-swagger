@@ -1,11 +1,13 @@
 require 'ruby-swagger/data/operation'
 require 'ruby-swagger/grape/type'
+require 'ruby-swagger/grape/route_settings'
 
 module Swagger::Grape
   class Method
     attr_reader :operation, :types, :scopes
 
     def initialize(route_name, route)
+      @route_settings = Swagger::Grape::RouteSettings.new(route)
       @route_name = route_name
       @route = route
       @types = []
@@ -25,10 +27,10 @@ module Swagger::Grape
     def new_operation
       @operation = Swagger::Data::Operation.new
       @operation.tags = grape_tags
-      @operation.operationId = @route.route_api_name if @route.route_api_name && @route.route_api_name.length > 0
-      @operation.summary = @route.route_description
-      @operation.description = (@route.route_detail && @route.route_detail.length > 0) ? @route.route_detail : @route.route_description
-      @operation.deprecated = @route.route_deprecated if @route.route_deprecated # grape extension
+      @operation.operationId = @route_settings.api_name if @route_settings.api_name && !@route_settings.api_name.empty?
+      @operation.summary = @route_settings.description
+      @operation.description = (@route_settings.detail && !@route_settings.detail.empty?) ? @route_settings.detail : @route_settings.description
+      @operation.deprecated = @route_settings.deprecated if @route_settings.deprecated # grape extension
 
       @operation
     end
@@ -47,7 +49,7 @@ module Swagger::Grape
       @operation.responses = Swagger::Data::Responses.new
 
       # Include all the possible errors in the response (store the types, they are documented separately)
-      (@route.route_errors || {}).each do |code, response|
+      (@route_settings.errors || {}).each do |code, response|
         error_response = { 'description' => response['description'] || response[:description] }
 
         if (entity = (response[:entity] || response['entity']))
@@ -62,16 +64,16 @@ module Swagger::Grape
         @operation.responses.add_response(code, Swagger::Data::Response.parse(error_response))
       end
 
-      if @route.route_response.present? && @route.route_response[:entity].present?
+      if @route_settings.response.present? && @route_settings.response[:entity].present?
         rainbow_response = { 'description' => 'Successful result of the operation' }
 
-        type = Swagger::Grape::Type.new(@route.route_response[:entity].to_s)
+        type = Swagger::Grape::Type.new(@route_settings.response[:entity].to_s)
         rainbow_response['schema'] = {}
-        remember_type(@route.route_response[:entity])
+        remember_type(@route_settings.response[:entity])
 
         # Include any response headers in the documentation of the response
-        if @route.route_response[:headers].present?
-          @route.route_response[:headers].each do |header_key, header_value|
+        if @route_settings.response[:headers].present?
+          @route_settings.response[:headers].each do |header_key, header_value|
             next unless header_value.present?
             rainbow_response['headers'] ||= {}
 
@@ -82,15 +84,16 @@ module Swagger::Grape
             }
           end
         end
+        # rubocop:disable IfInsideElse
 
-        if @route.route_response[:root].present?
+        if @route_settings.response[:root].present?
           # A case where the response contains a single key in the response
 
-          if @route.route_response[:isArray] == true
+          if @route_settings.response[:isArray] == true
             # an array that starts from a key named root
             rainbow_response['schema']['type'] = 'object'
             rainbow_response['schema']['properties'] = {
-              @route.route_response[:root] => {
+              @route_settings.response[:root] => {
                 'type' => 'array',
                 'items' => type.to_swagger
               }
@@ -98,13 +101,13 @@ module Swagger::Grape
           else
             rainbow_response['schema']['type'] = 'object'
             rainbow_response['schema']['properties'] = {
-              @route.route_response[:root] => type.to_swagger
+              @route_settings.response[:root] => type.to_swagger
             }
           end
 
         else
 
-          if @route.route_response[:isArray] == true
+          if @route_settings.response[:isArray] == true
             rainbow_response['schema']['type'] = 'array'
             rainbow_response['schema']['items'] = type.to_swagger
           else
@@ -112,6 +115,7 @@ module Swagger::Grape
           end
 
         end
+        # rubocop:enable IfInsideElse
 
         @operation.responses.add_response('200', Swagger::Data::Response.parse(rainbow_response))
       end
@@ -120,12 +124,12 @@ module Swagger::Grape
     end
 
     def operation_security
-      if @route.route_scopes # grape extensions
+      if @route_settings.scopes # grape extensions
         security = Swagger::Data::SecurityRequirement.new
-        security.add_requirement('oauth2', @route.route_scopes)
+        security.add_requirement('oauth2', @route_settings.scopes)
         @operation.security = [security]
 
-        @route.route_scopes.each do |scope|
+        @route_settings.scopes.each do |scope|
           @scopes << scope unless @scopes.include?(scope)
         end
       end
@@ -133,7 +137,7 @@ module Swagger::Grape
 
     # extract the tags
     def grape_tags
-      (@route.route_tags && !@route.route_tags.empty?) ? @route.route_tags : [@route_name.split('/')[1]]
+      (@route_settings.tags && !@route_settings.tags.empty?) ? @route_settings.tags : [@route_name.split('/')[1]]
     end
 
     def extract_params_and_types
@@ -142,7 +146,7 @@ module Swagger::Grape
       header_params
       path_params
 
-      case @route.route_method.downcase
+      case @route_settings.method.downcase
       when 'get'
         query_params
       when 'delete'
@@ -156,7 +160,7 @@ module Swagger::Grape
       when 'head'
         raise ArgumentError.new("Don't know how to handle the http verb HEAD for #{@route_name}")
       else
-        raise ArgumentError.new("Don't know how to handle the http verb #{@route.route_method} for #{@route_name}")
+        raise ArgumentError.new("Don't know how to handle the http verb #{@route_settings.method} for #{@route_name}")
       end
 
       @params
@@ -166,8 +170,8 @@ module Swagger::Grape
       @params ||= {}
 
       # include all the parameters that are in the headers
-      if @route.route_headers
-        @route.route_headers.each do |header_key, header_value|
+      if @route_settings.headers
+        @route_settings.headers.each do |header_key, header_value|
           @params[header_key] = { 'name' => header_key,
                                   'in' => 'header',
                                   'required' => (header_value[:required] == true),
@@ -192,7 +196,7 @@ module Swagger::Grape
     end
 
     def query_params
-      @route.route_params.each do |parameter|
+      @route_settings.params.each do |parameter|
         next if @params[parameter.first.to_s]
 
         swag_param = Swagger::Data::Parameter.from_grape(parameter)
@@ -206,7 +210,7 @@ module Swagger::Grape
 
     def body_params
       # include all the parameters that are in the content-body
-      return unless @route.route_params && @route.route_params.length > 0
+      return unless @route_settings.params && !@route_settings.params.empty?
 
       body_name = @operation.operationId ? "#{@operation.operationId}_body" : 'body'
       root_param = Swagger::Data::Parameter.parse({ 'name' => body_name,
@@ -215,7 +219,7 @@ module Swagger::Grape
                                                     'schema' => { 'type' => 'object', 'properties' => {} } })
 
       # create the params schema
-      @route.route_params.each do |parameter|
+      @route_settings.params.each do |parameter|
         param_name = parameter.first
         param_value = parameter.last
         schema = root_param.schema
@@ -235,7 +239,7 @@ module Swagger::Grape
       end
 
       schema = root_param.schema
-      @params['body'] = root_param if !schema.properties.nil? && schema.properties.keys.length > 0
+      @params['body'] = root_param if !schema.properties.nil? && !schema.properties.keys.empty?
     end
 
     # Can potentionelly be used for per-param documentation, for now used for example values

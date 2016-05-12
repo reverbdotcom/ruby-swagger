@@ -34,7 +34,7 @@ Style/RegexpLiteral:
 Style/BracesAroundHashParameters:
   Enabled: false
 
-Style/SingleSpaceBeforeFirstArg:
+Style/SpaceBeforeFirstArg:
   Enabled: false
 
 Metrics/ClassLength:

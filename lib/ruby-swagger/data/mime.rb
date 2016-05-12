@@ -22,7 +22,8 @@ module Swagger::Data
       'application/vnd.github.v3.html+json',
       'application/vnd.github.v3.full+json',
       'application/vnd.github.v3.diff',
-      'application/vnd.github.v3.patch']
+      'application/vnd.github.v3.patch'
+    ]
 
     def self.valid?(type)
       @@types.include?(type)

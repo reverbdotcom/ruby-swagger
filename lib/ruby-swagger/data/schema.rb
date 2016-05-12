@@ -54,7 +54,7 @@ module Swagger::Data
     end
 
     def [](attrib)
-      send("#{attrib}")
+      send(attrib.to_s)
     end
 
     def as_swagger

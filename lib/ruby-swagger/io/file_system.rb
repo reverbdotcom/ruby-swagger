@@ -7,7 +7,7 @@ require 'erb'
 
 module Swagger::IO
   class FileSystem
-    DOC_SUBPARTS = %w(responses security tags)
+    DOC_SUBPARTS = %w(responses security tags).freeze
 
     @@default_path = './doc/swagger'
 

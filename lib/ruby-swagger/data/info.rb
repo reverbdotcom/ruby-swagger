@@ -4,9 +4,9 @@ require 'ruby-swagger/data/license'
 
 module Swagger::Data
   class Info < Swagger::Object # https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#info-object
-    DEFAULT_TITLE = 'My uber-duper API'
-    DEFAULT_DESCRIPTION = 'My uber-duper API description'
-    DEFAULT_VERSION = '0.1'
+    DEFAULT_TITLE = 'My uber-duper API'.freeze
+    DEFAULT_DESCRIPTION = 'My uber-duper API description'.freeze
+    DEFAULT_VERSION = '0.1'.freeze
 
     attr_swagger :title, :description, :termsOfService, :contact, :license, :version
 

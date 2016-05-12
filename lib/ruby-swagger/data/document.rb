@@ -13,8 +13,8 @@ require 'ruby-swagger/data/external_documentation'
 
 module Swagger::Data
   class Document < Swagger::Object # https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#swagger-object
-    SPEC_VERSION = '2.0' # https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#fixed-fields
-    DEFAULT_HOST = 'localhost:80'
+    SPEC_VERSION = '2.0'.freeze # https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#fixed-fields
+    DEFAULT_HOST = 'localhost:80'.freeze
 
     attr_swagger :swagger, :info, :host, :basePath, :schemes, :consumes,
                  :produces, :paths, :definitions, :parameters, :responses, :securityDefinitions,

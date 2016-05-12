@@ -2,7 +2,7 @@ require 'ruby-swagger/io/file_system'
 
 module Swagger::IO
   class Security
-    SECURITY_FILE_NAME = 'securityDefinitions.yml'
+    SECURITY_FILE_NAME = 'securityDefinitions.yml'.freeze
 
     def self.write_security_definitions(security_definitions)
       return if security_definitions.nil? || security_definitions.empty?

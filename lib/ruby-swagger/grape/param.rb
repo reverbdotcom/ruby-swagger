@@ -19,11 +19,11 @@ module Swagger::Grape
     end
 
     def has_type_definition?
-      type.downcase == 'object'
+      type.casecmp('object').zero?
     end
 
     def type_definition
-      (Object.const_get(type)).to_s
+      Object.const_get(type).to_s
     end
 
     def type

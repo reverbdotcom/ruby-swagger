@@ -259,7 +259,8 @@ describe Swagger::Data::Schema do
             'type' => 'object',
             'required' => %w(
               message
-              code),
+              code
+            ),
             'properties' => {
               'message' => {
                 'type' => 'string'
@@ -330,7 +331,8 @@ describe Swagger::Data::Schema do
             },
             'required' => %w(
               name
-              petType)
+              petType
+            )
           }
         },
         'Cat' => {
@@ -349,7 +351,8 @@ describe Swagger::Data::Schema do
                     clueless
                     lazy
                     adventurous
-                    aggressive)
+                    aggressive
+                  )
                 }
               },
               'required' => [

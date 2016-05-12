@@ -46,7 +46,7 @@ module Swagger::Grape
     end
 
     def self.extract_all_types(types, all_types = [])
-      return all_types.uniq if types.length == 0
+      return all_types.uniq if types.empty?
 
       new_types = []
 
