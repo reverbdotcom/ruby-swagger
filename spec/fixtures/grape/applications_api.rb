@@ -16,8 +16,7 @@ class ApplicationsAPI < Grape::API
   def self.std_errors
     { '300' => { entity: ErrorRedirectEntity, description: 'You will be redirected' },
       '404' => { entity: ErrorNotFoundEntity, description: 'The document is nowhere to be found' },
-      '501' => { entity: ErrorBoomEntity, description: 'Shit happens' }
-    }
+      '501' => { entity: ErrorBoomEntity, description: 'Shit happens' } }
   end
 
   def self.authentication_headers

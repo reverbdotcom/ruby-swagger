@@ -2,7 +2,7 @@ require 'addressable/uri'
 
 module Swagger::Data
   class Url
-    SCHEMES = %w(http https)
+    SCHEMES = %w(http https).freeze
 
     attr_reader :url
 

@@ -3,8 +3,8 @@ require 'ruby-swagger/object'
 
 module Swagger::Data
   class License < Swagger::Object # https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#license-object
-    DEFAULT_NAME = 'Apache 2.0'
-    DEFAULT_URL = 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    DEFAULT_NAME = 'Apache 2.0'.freeze
+    DEFAULT_URL = 'http://www.apache.org/licenses/LICENSE-2.0.html'.freeze
 
     attr_swagger :name, :url
 

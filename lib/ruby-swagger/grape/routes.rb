@@ -1,6 +1,7 @@
 require 'ruby-swagger/data/paths'
 require 'ruby-swagger/data/path'
 require 'ruby-swagger/grape/route_path'
+require 'ruby-swagger/grape/route_settings'
 
 module Swagger::Grape
   class Routes
@@ -17,7 +18,8 @@ module Swagger::Grape
       paths = {}
 
       @routes.each do |route|
-        next if route.route_hidden == true # implement custom "hidden" extension
+        route_settings = Swagger::Grape::RouteSettings.new(route)
+        next if route_settings.hidden == true # implement custom "hidden" extension
 
         swagger_path_name = swagger_path_name(route)
         paths[swagger_path_name] ||= Swagger::Grape::RoutePath.new(swagger_path_name)
@@ -36,8 +38,9 @@ module Swagger::Grape
     private
 
     def swagger_path_name(grape_route)
-      grape_path_name = grape_route.route_path
-      grape_prefix = grape_route.route_prefix
+      grape_path_name = grape_route.path
+      grape_prefix = grape_route.prefix
+
       grape_path_name.gsub!(/^\/#{grape_prefix}/, '') if grape_prefix
       grape_path_name.gsub!(/^\/:version/, '') # remove api version - if any
       grape_path_name.gsub!(/\(\.:format\)$/, '') # remove api format - if any

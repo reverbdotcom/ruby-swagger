@@ -6,9 +6,9 @@ module Grape
       extend ActiveSupport::Concern
 
       module ClassMethods
-        def api_desc(description, options = {}, &block)
+        def api_desc(description, options = {})
           default_api_options!(options)
-          block.call if block_given?
+          yield if block_given?
           desc description, @api_options
         end
 

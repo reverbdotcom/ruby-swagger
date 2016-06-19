@@ -15,11 +15,11 @@ describe 'Ruby::Swagger' do
   end
 
   before do
-    FileUtils.rm_rf('./doc/swagger')
+    # FileUtils.rm_rf('./doc/swagger')
   end
 
   after do
-    FileUtils.rm_rf('./doc/swagger')
+    # FileUtils.rm_rf('./doc/swagger')
   end
 
   describe 'rake swagger:grape:generate_doc' do
@@ -355,8 +355,8 @@ describe 'Ruby::Swagger' do
                               'free' => { 'type' => 'boolean', 'description' => 'True if application is free' },
                               'name' => { 'type' => 'string', 'description' => 'Human readable application name' },
                               'description' => { 'type' => 'string', 'description' => 'Application description' },
-                              'pictures' => { 'type' => 'array', 'items' => { 'type' => 'object', '$ref' => '#/definitions/ImageEntity' }, 'description' => 'Application pictures' } } }
-                         )
+                              'pictures' => { 'type' => 'array', 'items' => { 'type' => 'object', '$ref' => '#/definitions/ImageEntity' }, 'description' => 'Application pictures' }
+                            } })
       end
 
       it 'should create a definition file ErrorBoomEntity.yml' do
@@ -366,8 +366,8 @@ describe 'Ruby::Swagger' do
                             'properties' => {
                               'errors' => { 'type' => 'array', 'items' => { 'type' => 'string' },
                                             'description' => 'errors produced by this method' },
-                              'message' => { 'type' => 'string', 'description' => 'Why? Why? Why????' } } }
-                         )
+                              'message' => { 'type' => 'string', 'description' => 'Why? Why? Why????' }
+                            } })
       end
 
       it 'should create a definition file ErrorNotFoundEntity.yml' do
@@ -377,8 +377,8 @@ describe 'Ruby::Swagger' do
                             'properties' => {
                               'errors' => { 'type' => 'array', 'items' => { 'type' => 'string' },
                                             'description' => 'errors produced by this method' },
-                              'message' => { 'type' => 'string', 'description' => 'Why? Why? Why????' } } }
-                         )
+                              'message' => { 'type' => 'string', 'description' => 'Why? Why? Why????' }
+                            } })
       end
 
       it 'should create a definition file ErrorRedirectEntity.yml' do
@@ -388,8 +388,8 @@ describe 'Ruby::Swagger' do
                             'properties' => {
                               'errors' => { 'type' => 'array', 'items' => { 'type' => 'string' },
                                             'description' => 'errors produced by this method' },
-                              'message' => { 'type' => 'string', 'description' => 'Why? Why? Why????' } } }
-                         )
+                              'message' => { 'type' => 'string', 'description' => 'Why? Why? Why????' }
+                            } })
       end
 
       it 'should create a definition file ImageEntity.yml' do
@@ -399,8 +399,8 @@ describe 'Ruby::Swagger' do
                             'properties' => {
                               'url' => { 'type' => 'string', 'description' => 'The url of the image' },
                               'name' => { 'type' => 'string', 'description' => 'The name of the image' },
-                              'size' => { 'type' => 'integer', 'description' => 'Size of the picture' } } }
-                         )
+                              'size' => { 'type' => 'integer', 'description' => 'Size of the picture' }
+                            } })
       end
 
       it 'should create a definition file StatusDetailedEntity.yml' do
@@ -424,12 +424,14 @@ describe 'Ruby::Swagger' do
                                                          'option_a' => { 'type' => 'object',
                                                                          'properties' => {
                                                                            'option_b' => { 'type' => 'array',
-                                                                                           'items' => { 'type' => 'string' }, 'description' => 'An option' } } },
-                                                         'option_c' => { 'type' => 'integer', 'description' => 'Last option' } } }, 'description' => 'List of elements' },
+                                                                                           'items' => { 'type' => 'string' }, 'description' => 'An option' }
+                                                                         } },
+                                                         'option_c' => { 'type' => 'integer', 'description' => 'Last option' }
+                                                       } }, 'description' => 'List of elements' },
                               'created_at' => { 'type' => 'string' },
                               'updated_at' => { 'type' => 'string' },
-                              'internal_id' => { 'type' => 'string' } } }
-                         )
+                              'internal_id' => { 'type' => 'string' }
+                            } })
       end
 
       it 'should create a definition file StatusEntity.yml' do
@@ -453,11 +455,13 @@ describe 'Ruby::Swagger' do
                                                          'option_a' => { 'type' => 'object',
                                                                          'properties' => {
                                                                            'option_b' => { 'type' => 'array',
-                                                                                           'items' => { 'type' => 'string' }, 'description' => 'An option' } } },
-                                                         'option_c' => { 'type' => 'integer', 'description' => 'Last option' } } }, 'description' => 'List of elements' },
+                                                                                           'items' => { 'type' => 'string' }, 'description' => 'An option' }
+                                                                         } },
+                                                         'option_c' => { 'type' => 'integer', 'description' => 'Last option' }
+                                                       } }, 'description' => 'List of elements' },
                               'created_at' => { 'type' => 'string' },
-                              'updated_at' => { 'type' => 'string' } } }
-                         )
+                              'updated_at' => { 'type' => 'string' }
+                            } })
       end
     end
 

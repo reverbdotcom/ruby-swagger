@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require 'ruby-swagger/grape/route_settings'
 
 module Grape
   module DSL
@@ -6,6 +7,8 @@ module Grape
       def api_present(*args)
         args_list = args || []
         options = {}
+
+        route_settings = Swagger::Grape::RouteSettings.new(route)
 
         # Initialize the options hash - either by assigning to the current options for the method or with a new one
         if args_list.count == 2
@@ -26,13 +29,13 @@ module Grape
         end
 
         # Setting the grape :with
-        if route.route_response.present? && route.route_response[:entity].present? && !options[:with].present? && route.route_response[:entity].is_a?(Class)
-          options[:with] = route.route_response[:entity]
+        if route_settings.response.present? && route_settings.response[:entity].present? && !options[:with].present? && route_settings.response[:entity].is_a?(Class)
+          options[:with] = route_settings.response[:entity]
         end
 
         # Setting the grape :root
-        if route.route_response.present? && route.route_response[:root].present? && !options[:root].present? && route.route_response[:root].is_a?(String)
-          options[:root] = route.route_response[:root]
+        if route_settings.response.present? && route_settings.response[:root].present? && !options[:root].present? && route_settings.response[:root].is_a?(String)
+          options[:root] = route_settings.response[:root]
         end
 
         # Setting the :current_user extension

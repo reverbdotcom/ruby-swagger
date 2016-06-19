@@ -3,7 +3,7 @@ require 'yaml'
 require 'ruby-swagger/io/file_system'
 
 describe Swagger::IO::FileSystem do
-  DOC_PATH = "#{File.dirname(__FILE__)}/../../doc/"
+  DOC_PATH = "#{File.dirname(__FILE__)}/../../doc/".freeze
 
   before do
     Swagger::IO::FileSystem.default_path = DOC_PATH
@@ -101,18 +101,23 @@ describe Swagger::IO::FileSystem do
                                                  'type' => 'object',
                                                  'properties' => {
                                                    'code' => { 'type' => 'integer', 'format' => 'int32' },
-                                                   'message' => { 'type' => 'string' } } },
+                                                   'message' => { 'type' => 'string' }
+                                                 }
+                                               },
                                                  'NewPet' => {
                                                    'required' => ['name'],
                                                    'type' => 'object',
                                                    'properties' => {
                                                      'name' => { 'type' => 'string' },
-                                                     'tag' => { 'type' => 'string' } } },
+                                                     'tag' => { 'type' => 'string' }
+                                                   }
+                                                 },
                                                  'Pet' => {
                                                    'type' => 'object',
                                                    'allOf' => [{ '$ref' => '#/definitions/NewPet' },
                                                                { 'required' => ['id'],
-                                                                 'properties' => { 'id' => { 'type' => 'integer', 'format' => 'int64' } } }] } })
+                                                                 'properties' => { 'id' => { 'type' => 'integer', 'format' => 'int64' } } }]
+                                                 } })
     end
   end
 
@@ -156,18 +161,23 @@ describe Swagger::IO::FileSystem do
                                                  'type' => 'object',
                                                  'properties' => {
                                                    'code' => { 'type' => 'integer', 'format' => 'int32' },
-                                                   'message' => { 'type' => 'string' } } },
+                                                   'message' => { 'type' => 'string' }
+                                                 }
+                                               },
                                                  'NewPet' => {
                                                    'required' => ['name'],
                                                    'type' => 'object',
                                                    'properties' => {
                                                      'name' => { 'type' => 'string' },
-                                                     'tag' => { 'type' => 'string' } } },
+                                                     'tag' => { 'type' => 'string' }
+                                                   }
+                                                 },
                                                  'Pet' => {
                                                    'type' => 'object',
                                                    'allOf' => [{ '$ref' => '#/definitions/NewPet' },
                                                                { 'required' => ['id'],
-                                                                 'properties' => { 'id' => { 'type' => 'integer', 'format' => 'int64' } } }] } })
+                                                                 'properties' => { 'id' => { 'type' => 'integer', 'format' => 'int64' } } }]
+                                                 } })
     end
   end
 end
