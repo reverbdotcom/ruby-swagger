@@ -2,6 +2,7 @@ module Swagger::Data
   class Mime
     @@types = [
       'text/plain',
+      'text/json',
       'text/plain; charset=utf-8',
       'application/json',
       'application/hal+json',
