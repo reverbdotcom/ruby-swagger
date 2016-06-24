@@ -139,11 +139,15 @@ module Swagger::Data
     def security=(new_security)
       return nil unless new_security
 
-      unless new_security.is_a?(Swagger::Data::SecurityRequirement)
-        new_security = Swagger::Data::SecurityRequirement.parse(new_security)
-      end
+      @security = []
 
-      @security = new_security
+      new_security.each do |sec_object|
+        unless sec_object.is_a?(Swagger::Data::SecurityRequirement)
+          sec_object = Swagger::Data::SecurityRequirement.parse(sec_object)
+        end
+
+        @security.push(sec_object)
+      end
     end
 
     def tags=(new_tags)
