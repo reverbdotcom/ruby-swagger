@@ -56,7 +56,7 @@ module Swagger::Grape
     end
 
     def scopes
-      _description.fetch(:scopes, nil) || []
+      _description.fetch(:scopes, nil)
     end
 
     def inspect
