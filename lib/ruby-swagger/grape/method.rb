@@ -229,7 +229,7 @@ module Swagger::Grape
         if param_name.scan(/[0-9a-zA-Z_]+/).count == 1
           # it's a simple parameter, adding it to the properties of the main object
           converted_param = Swagger::Grape::Param.new(param_value)
-          schema.properties[param_name] = converted_param.to_swagger
+          schema.properties[param_name] = converted_param.to_swagger_without_required
           required_parameter(schema, param_name, param_value)
           documented_paramter(schema, param_name, param_value)
           remember_type(converted_param.type_definition) if converted_param.has_type_definition?
@@ -270,7 +270,7 @@ module Swagger::Grape
       append_to = find_elem_in_schema(schema, path.dup)
       converted_param = Swagger::Grape::Param.new(parameter)
 
-      append_to['properties'][path.last] = converted_param.to_swagger
+      append_to['properties'][path.last] = converted_param.to_swagger_without_required
 
       remember_type(converted_param.type_definition) if converted_param.has_type_definition?
       required_parameter(append_to, path.last, parameter)
