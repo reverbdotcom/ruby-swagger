@@ -233,6 +233,7 @@ describe 'Ruby::Swagger' do
         expect(doc['parameters'][2]['schema']['properties']['godzilla']['type']).to eq 'array'
         expect(doc['parameters'][2]['schema']['properties']['godzilla']['description']).to eq 'Multiple options for this API'
         expect(doc['parameters'][2]['schema']['properties']['godzilla']['items']['type']).to eq 'string'
+        expect(doc['parameters'][2]['schema']['properties']['godzilla']['required']).to be_nil
 
         expect(doc['parameters'][2]['schema']['properties']['simple']['type']).to eq 'integer'
         expect(doc['parameters'][2]['schema']['properties']['simple']['description']).to eq 'A simple property'
@@ -248,6 +249,7 @@ describe 'Ruby::Swagger' do
 
         expect(doc['parameters'][2]['schema']['properties']['options']['items']['properties']['other']['description']).to eq 'Another option'
         expect(doc['parameters'][2]['schema']['properties']['options']['items']['properties']['other']['type']).to eq 'integer'
+        expect(doc['parameters'][2]['schema']['properties']['options']['items']['properties']['other']['required']).to be_nil
 
         expect(doc['parameters'][2]['schema']['properties']['options']['items']['properties']['list']['description']).to eq 'A list of options'
         expect(doc['parameters'][2]['schema']['properties']['options']['items']['properties']['list']['type']).to eq 'array'
